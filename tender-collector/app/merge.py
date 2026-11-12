@@ -19,6 +19,7 @@ class MergeError(ValueError):
 
 @dataclass(frozen=True)
 class EffectiveDeadline:
+    project_code: str  # 项目编号（即归并所依据的原公告编号）
     project_name: str
     deadline: str
     source_code: str
@@ -69,6 +70,7 @@ def merge_projects(rows: Iterable[dict[str, Any]]) -> list[EffectiveDeadline]:
             raise MergeError(f"项目 {project_name} 的所有公告均未给出投标截止时间")
         results.append(
             EffectiveDeadline(
+                project_code=code,
                 project_name=project_name,
                 deadline=source["deadline"],
                 source_code=source["code"],
